@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Category; // <--- WAJIB TAMBAHIN INI
 use App\Models\Loan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,26 +11,25 @@ use Carbon\Carbon;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        // Ambil input pencarian
-        $search = $request->input('search');
-
-        // Query buku dengan relasi kategori
+        // 1. Ambil SEMUA buku dengan kategori untuk kebutuhan Live Search Alpine.js
+        // Kita tidak filter 'search' di sini lagi karena sudah dihandle Alpine.js di sisi client
         $books = Book::with('category')
-            ->where('stok', '>', 0)
-            ->when($search, function($query, $search) {
-                return $query->where('judul', 'like', "%{$search}%")
-                             ->orWhere('penulis', 'like', "%{$search}%");
-            })
+            ->where('stok', '>=', 0) // Stok 0 tetep tampilin biar user tau bukunya ada tapi habis
             ->get();
 
-        $myLoans = Loan::with('book')
+        // 2. Ambil data kategori buat pilihan filter di dashboard
+        $categories = Category::all();
+
+        // 3. Ambil riwayat pinjaman user
+        $myLoans = Loan::with('book.category')
                     ->where('user_id', Auth::id())
                     ->orderBy('created_at', 'desc')
                     ->get();
 
-        return view('dashboard', compact('books', 'myLoans'));
+        // 4. Kirim ke view (Pastikan variabel 'categories' ada di sini)
+        return view('dashboard', compact('books', 'categories', 'myLoans'));
     }
 
     public function borrow(Request $request)
@@ -68,6 +68,7 @@ class UserController extends Controller
 
         $loan->update([
             'status' => 'dikembalikan',
+            // Pastikan field ini namanya 'tanggal_kembali' di database/migration lu
             'tanggal_kembali' => Carbon::now(),
         ]);
 

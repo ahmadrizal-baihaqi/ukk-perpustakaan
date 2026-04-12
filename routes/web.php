@@ -5,10 +5,14 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome'); // Ini akan jadi Landing Page nanti
+    return view('welcome', [
+        'totalBuku' => \App\Models\Book::count(),
+        'totalAnggota' => \App\Models\User::where('role', 'user')->count(),
+        'totalPinjaman' => \App\Models\Loan::count(),
+    ]);
 });
 
-// Wilayah Khusus Admin
+// Route Admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
