@@ -1,66 +1,112 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Libera School Library System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Libera is a web-based school library (book borrowing) management system built on the [Laravel](https://laravel.com/) framework. It provides distinct interfaces for Students (to borrow/return books) and Administrators (to manage inventory, categories, users, and view reports).
 
-## About Laravel
+## 📚 Technical Documentation
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Comprehensive documentation has been generated in the `docs/` folder:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+*   [Database Schema & ERD](docs/database_schema.md)
+*   [API Routes & Backend Logic](docs/api_routes.md)
+*   [Frontend UI & Views](docs/frontend_ui.md)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ✨ Features
 
-## Learning Laravel
+*   **Role-Based Access Control**: Secure login distinguishing between Admin and User roles using Laravel Breeze.
+*   **Inventory Management**: Admins can full-CRUD Books (including cover uploads) and Categories.
+*   **Borrowing Flow**: Students can borrow books dynamically (1-14 days). Stock limits are enforced.
+*   **Return Flow**: Automated stock replenishment upon book return.
+*   **Reporting**: Detailed transaction history accessible to Administrators.
+*   **Tailwind UI**: Fully responsive frontend views.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🚀 Installation & Setup Guide
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Prerequisites
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+*   PHP >= 8.2
+*   Composer
+*   Node.js & npm
+*   SQLite / MySQL (SQLite by default)
 
-## Laravel Sponsors
+### Step-by-step Installation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Clone the repository** (if applicable) or navigate to the project directory:
 
-### Premium Partners
+    ```bash
+    cd libera
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+2. **Install PHP dependencies**:
 
-## Contributing
+    ```bash
+    composer install
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. **Install NPM dependencies**:
 
-## Code of Conduct
+    ```bash
+    npm install
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. **Environment Setup**:
 
-## Security Vulnerabilities
+    Copy the example environment file:
+    ```bash
+    cp .env.example .env
+    ```
+    
+    Generate the application key:
+    ```bash
+    php artisan key:generate
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5. **Database Configuration**:
 
-## License
+    By default, the project uses SQLite. You can create the database file manually:
+    ```bash
+    touch database/database.sqlite
+    ```
+    *(Note: If you're on Windows, simply create an empty `database.sqlite` file in the `database` folder).*
+    
+    Alternatively, if you wish to use MySQL, update the `.env` file accordingly:
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=libera_db
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+6. **Run Migrations & Seeders**:
+
+    Migrate the database schema (and seed if applicable):
+    ```bash
+    php artisan migrate
+    ```
+    *(Use `php artisan migrate --seed` if a database seeder for admin accounts is present).*
+
+7. **Link Storage**:
+
+    This step is required because book covers are saved into the `storage/app/public` directory.
+    ```bash
+    php artisan storage:link
+    ```
+
+8. **Start the localized servers**:
+
+    Run the frontend compiler (Vite) in terminal 1:
+    ```bash
+    npm run dev
+    ```
+    
+    Run the Laravel server in terminal 2:
+    ```bash
+    php artisan serve
+    ```
+
+    The application will now be accessible at `http://127.0.0.1:8000`.
+
+## 🔒 Default Accounts
+
+To assign an Admin account, register a new user normally via the `http://127.0.0.1:8000/register` page, then manually update the `role` field from `user` to `admin` directly within your database manager (SQLite or MySQL). All newly registered users default to the standard student `user` role.
