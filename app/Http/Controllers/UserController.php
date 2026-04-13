@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use App\Models\Category; // <--- WAJIB TAMBAHIN INI
+use App\Models\Category;
 use App\Models\Loan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        // 1. Ambil SEMUA buku dengan kategori untuk kebutuhan Live Search Alpine.js
-        // Kita tidak filter 'search' di sini lagi karena sudah dihandle Alpine.js di sisi client
+        // 1. Ambil semua buku dengan relasi kategori, termasuk yang stoknya 0
         $books = Book::with('category')
             ->where('stok', '>=', 0) // Stok 0 tetep tampilin biar user tau bukunya ada tapi habis
             ->get();
@@ -28,7 +27,7 @@ class UserController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->get();
 
-        // 4. Kirim ke view (Pastikan variabel 'categories' ada di sini)
+        // 4. Kirim ke view dashboard
         return view('dashboard', compact('books', 'categories', 'myLoans'));
     }
 
@@ -68,8 +67,7 @@ class UserController extends Controller
 
         $loan->update([
             'status' => 'dikembalikan',
-            // Pastikan field ini namanya 'tanggal_kembali' di database/migration lu
-            'tanggal_kembali' => Carbon::now(),
+            'tanggal_kembali' => Carbon::now('Asia/Jakarta'),
         ]);
 
         Book::find($loan->book_id)->increment('stok');

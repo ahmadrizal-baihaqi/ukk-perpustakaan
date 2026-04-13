@@ -110,7 +110,7 @@
                         <table class="w-full text-left">
                             <thead>
                                 <tr class="text-gray-400 text-[9px] uppercase tracking-[0.25em] border-b border-gray-50">
-                                    <th class="pb-5 font-black">Student Name</th>
+                                    <th class="pb-5 font-black">User Name</th>
                                     <th class="pb-5 font-black">Book Title</th>
                                     <th class="pb-5 font-black text-center">Date Borrowed</th>
                                     <th class="pb-5 font-black text-right">Activity Status</th>
