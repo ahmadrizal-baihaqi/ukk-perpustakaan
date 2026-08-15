@@ -1,6 +1,6 @@
 # Libera School Library System
 
-Libera is a web-based school library (book borrowing) management system built on the [Laravel](https://laravel.com/) framework. It provides distinct interfaces for Students (to borrow/return books) and Administrators (to manage inventory, categories, users, and view reports).
+Libera is a web-based school library (book borrowing) management system built on the [Laravel](https://laravel.com/) framework. It provides distinct interfaces for Students (to borrow/return books) and Administrators (to manage inventory and view transaction history).
 
 ## 📚 Technical Documentation
 
@@ -18,6 +18,25 @@ Comprehensive documentation has been generated in the `docs/` folder:
 *   **Return Flow**: Automated stock replenishment upon book return.
 *   **Reporting**: Detailed transaction history accessible to Administrators.
 *   **Tailwind UI**: Fully responsive frontend views.
+
+## 🛠️ Tech Stack
+
+### Backend
+*   **Framework**: [Laravel](https://laravel.com/) (PHP)
+*   **Authentication**: Laravel Breeze
+*   **Database**: SQLite / MySQL
+*   **Server**: PHP >= 8.2
+
+### Frontend
+*   **Template Engine**: Blade (Laravel's templating engine)
+*   **Styling**: Tailwind CSS
+*   **Build Tool**: Vite
+*   **Runtime**: Node.js & npm
+
+### Languages Used
+*   **Blade**: 56%
+*   **PHP**: 43.5%
+*   **Other**: 0.5%
 
 ## 🚀 Installation & Setup Guide
 
@@ -109,4 +128,4 @@ Comprehensive documentation has been generated in the `docs/` folder:
 
 ## 🔒 Default Accounts
 
-To assign an Admin account, register a new user normally via the `http://127.0.0.1:8000/register` page, then manually update the `role` field from `user` to `admin` directly within your database manager (SQLite or MySQL). All newly registered users default to the standard student `user` role.
+To assign an Admin account, register a new user normally via the `http://127.0.0.1:8000/register` page, then manually update the `role` field from `user` to `admin` directly within your database.
